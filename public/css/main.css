@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:wght@300;400&display=swap');
+
+body {
+	margin-top: 45px;
+	font-family: Lato;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 26px;
+	color: black;
+}
+
+
+.header{
+	background-color: #d6edff;
+	box-shadow: 4px 3px 3px #C9D5DC;
+	height: 60px;
+}
+
+
+.footer{
+	background-color: #C9D5DC;
+}
+
+.section{
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.section1{
+	padding-top: 20px;
+	padding-bottom: 20px;
+	background-color: #d6edff;
+}
+
+.navbar-brand{
+	color:#025595;
+	font-size: 23px;
+}
+.navbar-brand:hover{
+	color:#4891BF;
+}
+
+.nav-item{
+	display: flex;
+	align-items: center;
+}
+
+.nav-link{
+	color:#000;
+	font-size: 17px;
+	font-family: Montserrat;
+	font-weight: 400;
+}
+
+.nav-link:hover{
+	color:#4891BF;
+}
+/* Стилі заголовків для всіх сторінок */
+.title{
+	font-family: Montserrat;
+	font-size: 30px;
+	line-height: 26px;
+	font-weight: 600;
+	color:#025595;
+	padding-bottom: 14px;
+}
+/* Стилі для рекламного банера */
+#carouselExample {
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.carousel-inner {
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+/* Стилі для карток із категоріями товарів */
+.category-card {
+	max-width: 400px;
+	height: 100%;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	overflow: hidden;
+	transition: transform 0.2s ease-in-out;
+	cursor: pointer;
+}
+
+.category-card:hover {
+	transform: scale(1.05);
+}
+
+.category-card img {
+	max-width: 100%;
+	height: 200px;
+}
+
+.category-title {
+	font-family: Lato;
+	font-size: 24px;
+	margin-top: 10px;
+	color: #025595;
+	font-weight: 500;
+}
+
+
+/* Стилі для картки товарів */
+.product-container {
+	max-width: 380px;
+	margin: 5px auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.product-title{
+	font-family: Montserrat;
+	font-size: 26px;
+	color:#0b2e49;
+}
+
+.product-text{
+	font-family: Lato;
+	font-size: 18px;
+}
+.product-price{
+	font-family: Montserrat;
+	font-style: italic;
+	font-size: 18px;
+}
+
+.img-product{
+	max-width: 100%;
+	height: 280px;
+}
+
+
+
+/* Стилі для сторінки: Контакти */
+.item{
+	display: block;
+	margin-bottom: 4px;
+}
+.item-title{
+	font-family: Montserrat;
+	font-style: italic;
+	font-size: 25px;
+	line-height: 28px;
+	color:#4891BF;
+}
+.item-text{
+	font-family: Lato;
+	font-size: 20px;
+	line-height: 26px;
+}
+
+.phone, .email, .grafic, .name, .number{
+	font-family: Lato;
+	font-style: italic;
+	font-size: 20px;
+	line-height: 26px;
+	color:#4891BF;
+}
+
+
+
+
+/* Buttons web-site */
+/* Cтилі кнопки */
+.btn {
+	padding: 8px 15px;
+	font-size: 17px;
+	cursor: pointer;
+	border-radius: 10px;
+}
+
+/* Стилі для кнопки Додати в корзину */
+.btn-green{
+	color: #fff;
+	background-color: #4caf50;
+	border: 1px solid #45a049;
+}
+.btn-green:hover {
+	color:#2b522d;
+	background-color: #45a049;
+	border: 1px solid #2b522d;
+}
+
+/* Стилі для кнопки Детальніше */
+.btn-blue{
+	color: #fff;
+	background-color: #4891BF;
+	border: 1px solid #4891BF;
+}
+
+.btn-blue:hover{
+	color:#0b2e49;
+	background-color: #d6edff;
+	border: 1px solid #4891BF;
+}
+
+/* Стилі для кнопки Перейти до певної категорії  */
+.btn-steal-blue{
+	color:#4682B4;
+	background-color: #B0C4DE;
+	border: 1px solid #B0C4DE;
+}
+
+.btn-steal-blue:hover{
+	color: #0b2e49;
+	background-color: #d6edff;
+	border: 1px solid #B0C4DE;
+}
+
+
+/* Відгуки користувачів */
+.card{
+	width:600px;
+	height: 100%;
+}
+.card-body{
+	padding: 20px;
+
+}
+.card-title{
+	font-family: Montserrat;
+	font-size: 24px;
+	color:#4682B4;
+
+}
+.card-text{
+	font-family: Lato;
+	font-size: 18px;
+}
