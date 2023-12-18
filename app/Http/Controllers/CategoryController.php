@@ -29,7 +29,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return 'Запит на створення нової категорії';
     }
 
     /**
@@ -48,9 +48,11 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, Category $category)
     {
-        return view('admin.classes.edit');
+        $oldCategory = Category::find($id);
+        $newCategoryName = '';
+        return view('admin.classes.edit', compact('oldCategory', 'newCategoryName'));
     }
 
     /**
@@ -58,7 +60,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $newCategoryName = $request->input('new_category_name');
+        $oldCategory = Category::find($id);
+
+        if ($oldCategory) {
+            $oldCategory->name = $newCategoryName;
+            $oldCategory->save();
+        }
+
+        return redirect()->route('classes.index')->with('success', 'Категорію успішно змінено.');
     }
 
     /**
@@ -66,6 +76,12 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Category::find($id);
+        if ($category) {
+            $category->delete();
+            return redirect()->route('classes.index')->with('success', 'Категорію успішно видалено.');
+        }else {
+            return redirect()->route('classes.index')->with('error', 'Помилка видалення категорії.');
+        } 
     }
 }

@@ -31,8 +31,8 @@
 								<td>{{ $product->id }}</td>
 								<td>{{ $product->name }}</td>
 								<td>
-									 <a href="" class="btn btn-primary">Редагувати</a>
-									 <form action="" method="POST" style="display: inline;">
+									 <a href="{{ route('goods.edit', $product->id) }}" class="btn btn-primary">Редагувати</a>
+									 <form action="{{ route('goods.destroy', $product->id) }}" method="POST" style="display: inline;">
 										  @csrf
 										  @method('DELETE')
 										  <button type="submit" class="btn btn-danger">Видалити</button>
@@ -42,7 +42,7 @@
 					 @endforeach
 				</tbody>
 			</table>
-			<a href="" class="btn btn-success">Створити новий товар</a>
+			<a href="{{ route('goods.create') }}" class="btn btn-success">Створити новий товар</a>
 			</div>
 		</div>
 	</div>

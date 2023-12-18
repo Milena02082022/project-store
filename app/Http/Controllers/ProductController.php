@@ -29,7 +29,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return 'Запит на створення нового товару';
     }
 
     /**
@@ -48,9 +48,11 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, Product $product)
     {
-        return view('admin.goods.edit');
+        $oldProduct = Product::find($id);
+        $newProductName = '';
+        return view('admin.goods.edit', compact('oldProduct', 'newProductName'));
     }
 
     /**
@@ -58,7 +60,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $newProductName = $request->input('new_product_name');
+        $oldProduct = Product::find($id);
+
+        if ($oldProduct) {
+            $oldProduct->name = $newProductName;
+            $oldProduct->save();
+        }
+
+        return redirect()->route('goods.index')->with('success', 'Товар успішно змінено.');
     }
 
     /**
@@ -66,6 +76,12 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::find($id);
+        if ($product) {
+            $product->delete();
+            return redirect()->route('goods.index')->with('success', 'Товар успішно видалений.');
+        }else {
+            return redirect()->route('goods.index')->with('error', 'Помилка видалення товару.');
+        } 
     }
 }

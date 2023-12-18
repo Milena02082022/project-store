@@ -4,7 +4,7 @@
 <section class="section2">
 	<div class="container">
 		<h3 class="title">Створити новий товар</h3>
-        <form method="POST" action="">
+        <form method="POST" action="{{ route('goods.store') }}">
             @csrf
             <div class="form-group pb-2">
                 <label for="name">Назва товару:</label>
