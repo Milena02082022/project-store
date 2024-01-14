@@ -1,23 +1,21 @@
-@extends('layouts.app')
+@extends('layouts.auth')
+
+@section('page.title', "Особистий кабінет користувача")
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Кабінет користувача') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('Вітаю! Ви успішно авторизовані!') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<section class="section2">
+		<div class="container mt-4">
+			<div class="row">
+			  <div class="col-md-2">
+				 <div class="list-group">
+					<a href="{{route('user.profile')}}" class="list-group-item list-group-item-action">Профіль</a>
+				 </div>
+			  </div>
+			  <div class="col-md-9">
+				 <h3 class="title">Привіт, {{ Auth::user()->name }}!</h3>
+                 <p class="item-text">Ви можете створити чи переглянути своє замовлення!</p>
+			  </div>
+			</div>
+		</div>
+</section>
 @endsection

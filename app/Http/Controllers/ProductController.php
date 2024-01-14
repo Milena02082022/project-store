@@ -29,44 +29,51 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return 'Запит на створення нового товару';
+        $request->validate([
+            'category_id' => 'required',
+            'name' => 'required', 
+            'code' => 'required', 
+            'description' => 'required',
+            'price' => 'required', 
+        ]);
+        Product::create([
+            'category_id' => $request->input('category_id'),
+            'name'        => $request->input('name'),
+            'code'        => $request->input('code'),
+            'description' => $request->input('description'),
+            'price'       => $request->input('price'),
+        ]);
+        return redirect()->route('goods.index')->with('success', 'Товар успішно створено.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        $product = Product::find($id);
-        if ($product) {
-            return view('admin.goods.show', compact('product'));
-        } else {
-            return redirect()->route('goods.index')->with('error', 'Товар не знайдено або його не існує');
-        }
+        return view('admin.goods.show', compact('product'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id, Product $product)
+    public function edit(Product $product)
     {
-        $oldProduct = Product::find($id);
-        $newProductName = '';
-        return view('admin.goods.edit', compact('oldProduct', 'newProductName'));
+        return view('admin.goods.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
-        $newProductName = $request->input('new_product_name');
-        $oldProduct = Product::find($id);
+        $request->validate([
+            'new_product_name' => 'required',
+        ]);
 
-        if ($oldProduct) {
-            $oldProduct->name = $newProductName;
-            $oldProduct->save();
-        }
+        $product->update([
+            'name' => $request->input('new_product_name'),
+        ]);
 
         return redirect()->route('goods.index')->with('success', 'Товар успішно змінено.');
     }
@@ -74,9 +81,8 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        $product = Product::find($id);
         if ($product) {
             $product->delete();
             return redirect()->route('goods.index')->with('success', 'Товар успішно видалений.');

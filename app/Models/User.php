@@ -40,20 +40,25 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function assignRole($roleName)
+    public function hasRole($role)
     {
-        $role = Role::where('name', $roleName)->firstOrFail();
-        $this->roles()->attach($role);
+        return $this->role === $role;
     }
-
-    public function hasRole($roles)
-    {
-        return $this->role()->whereIn('name', $roles)->count() > 0;
-    }
-
     
+    public function isAdmin()
+    {
+        return $this->role_id === 2;
+    }
 
-   
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function currentOrder()
+    {
+        return $this->orders()->where('status', 'В обробці')->latest()->first();
+    }
 
     /**
      * The attributes that should be cast.

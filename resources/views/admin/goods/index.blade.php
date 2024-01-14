@@ -4,7 +4,7 @@
 <section class="section2">
 	<div class="container">
 		<div class="row">
-			<div class="col-12 col-md-10">
+			<div class="col-12 col-md-12">
 				@if (session('success'))
 					<div class="alert alert-success">
 						{{ session('success') }}
@@ -31,12 +31,13 @@
 								<td>{{ $product->id }}</td>
 								<td>{{ $product->name }}</td>
 								<td>
-									 <a href="{{ route('goods.edit', $product->id) }}" class="btn btn-primary">Редагувати</a>
-									 <form action="{{ route('goods.destroy', $product->id) }}" method="POST" style="display: inline;">
+									<a href="{{ route('goods.show', $product->id) }}" class="btn btn-info">Деталі</a>
+									<a href="{{ route('goods.edit', $product->id) }}" class="btn btn-primary">Редагувати</a>
+									<form action="{{ route('goods.destroy', $product->id) }}" method="POST" style="display: inline;">
 										  @csrf
 										  @method('DELETE')
 										  <button type="submit" class="btn btn-danger">Видалити</button>
-									 </form>
+									</form>
 								</td>
 						  </tr>
 					 @endforeach

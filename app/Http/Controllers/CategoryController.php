@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Models\Category;
 
@@ -29,59 +30,63 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        return 'Запит на створення нової категорії';
+        $request->validate([
+            'name'        => 'required',
+            'code'        => 'required',
+            'description' => 'required', 
+        ]);
+        Category::create([
+            'name'        => $request->input('name'),
+            'code'        => $request->input('code'),
+            'description' => $request->input('description'),
+        ]);
+        return redirect()->route('classes.index')->with('success', 'Категорію успішно створено.');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        $category = Category::find($id);
-        if ($category) {
-            return view('admin.classes.show', compact('category'));
-        } else {
-            return redirect()->route('classes.index')->with('error', 'Категорія не знайдена або її не існує');
-        }
+        return view('admin.classes.show', compact('category'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id, Category $category)
+    public function edit( Category $category)
     {
-        $oldCategory = Category::find($id);
-        $newCategoryName = '';
-        return view('admin.classes.edit', compact('oldCategory', 'newCategoryName'));
+        return view('admin.classes.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Category $category)
     {
-        $newCategoryName = $request->input('new_category_name');
-        $oldCategory = Category::find($id);
+        $request->validate([
+            'new_category_name' => 'required',
+        ]);
 
-        if ($oldCategory) {
-            $oldCategory->name = $newCategoryName;
-            $oldCategory->save();
-        }
+        $category->update([
+            'name' => $request->input('new_category_name'),
+        ]);
+
 
         return redirect()->route('classes.index')->with('success', 'Категорію успішно змінено.');
-    }
+    }   
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        $category = Category::find($id);
         if ($category) {
             $category->delete();
             return redirect()->route('classes.index')->with('success', 'Категорію успішно видалено.');
-        }else {
+        } else {
             return redirect()->route('classes.index')->with('error', 'Помилка видалення категорії.');
-        } 
+        }
     }
 }

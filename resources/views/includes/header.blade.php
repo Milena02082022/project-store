@@ -27,28 +27,32 @@
 	
 				  <!-- Right Side Of Navbar -->
 				  <ul class="navbar-nav ms-auto">
-						@guest
+					@guest
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('login') }}">{{ __('Увійти') }}</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('register') }}">{{ __('Зареєструватися') }}</a>
+						</li>
+					@else
+						@if(Auth::user()->isAdmin())
 							<li class="nav-item">
-								<a class="nav-link" href="{{ route('login') }}">{{ __('Увійти') }}</a>
+									<a class="nav-link" href="{{ route('admin.home') }}">{{ __('Панель адміністратора') }}</a>
 							</li>
+						@else
 							<li class="nav-item">
-								<a class="nav-link" href="{{ route('register') }}">{{ __('Зареєструватися') }}</a>
+								<a class="nav-link" href="{{ route('home') }}">{{ __('Особистий кабінет') }}</a>
 							</li>
-							@else
-							<li class="nav-item">
-								<a class="nav-link" href="{{ route('admin.home') }}">{{ __('Панель адміністратора') }}</a>
-							</li>
-							<li>
-								<a class="nav-link" href="{{ route('logout') }}"
-									onclick="event.preventDefault();
-												document.getElementById('logout-form').submit();">
-									{{ __('Вийти') }}
-								</a>
-								<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+						@endif
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+								{{ __('Вийти') }}
+							</a>
+							<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
 									@csrf
-								</form>
-							</li>
-						@endguest	
+							</form>
+						</li>
+					@endguest
 				  	</ul>
 			 </div>
 		</div>

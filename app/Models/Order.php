@@ -9,8 +9,34 @@ class Order extends Model
 {
     use HasFactory;
 
-    public function products(){
-        return $this->belongsToMany(Product::class);
+    protected $fillable = [
+        'user_id',
+        'status',
+        'name',
+        'phone_number',
+        'shipping_address',
+        'postal_service',
+        'payment_method',
+        'total_amount',
+    ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
+
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function getTotalPrice()
+    {
+        return $this->orderItems->sum(function ($item) {
+            return $item->getTotalPrice();
+        });
+    }
+
+    
 }

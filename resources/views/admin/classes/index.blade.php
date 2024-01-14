@@ -31,8 +31,8 @@
 								<td>{{ $category->id }}</td>
 								<td>{{ $category->name }}</td>
 								<td>
-									 <a href="{{ route('classes.edit', $category->id) }}" class="btn btn-primary">Редагувати</a>
-									 <form action="{{route('classes.destroy', $category->id)}}" method="POST" style="display: inline;">
+									 <a href="{{ route('classes.edit', ['category' => $category->id]) }}" class="btn btn-primary">Редагувати</a>
+									 <form action="{{route('classes.destroy', ['category' => $category->id])}}" method="POST" style="display: inline;">
 										  @csrf
 										  @method('DELETE')
 										  <button type="submit" class="btn btn-danger">Видалити</button>

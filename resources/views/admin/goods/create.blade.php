@@ -11,20 +11,20 @@
                 <input type="text" name="name" class="form-control">
             </div>
 				<div class="form-group pb-2">
-					<label for="name">Код категорії:</label>
-					<input type="text" name="name" class="form-control">
+					<label for="category_id">Код категорії:</label>
+					<input type="text" name="category_id" class="form-control">
 			  </div>
 				<div class="form-group pb-2">
-					<label for="name">Код товару:</label>
-					<input type="text" name="name" class="form-control">
+					<label for="code">Код товару:</label>
+					<input type="text" name="code" class="form-control">
 			  </div>
 			  <div class="form-group pb-2">
-					<label for="name">Опис товару:</label>
-					<input type="text" name="name" class="form-control">
+					<label for="descriotion">Опис товару:</label>
+					<input type="text" name="description" class="form-control">
 		  		</div>
 				<div class="form-group pb-2">
-					<label for="name">Ціна товару:</label>
-					<input type="text" name="name" class="form-control">
+					<label for="price">Ціна товару:</label>
+					<input type="text" name="price" class="form-control">
 		  		</div>
             <button type="submit" class="btn btn-primary">Зберегти</button>
         </form>

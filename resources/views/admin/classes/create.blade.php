@@ -11,12 +11,12 @@
                 <input type="text" name="name" class="form-control">
             </div>
 				<div class="form-group pb-2">
-					<label for="name">Код категорії:</label>
-					<input type="text" name="name" class="form-control">
+					<label for="code">Код категорії:</label>
+					<input type="text" name="code" class="form-control">
 			  </div>
 			  <div class="form-group pb-2">
-					<label for="name">Опис категорії:</label>
-					<input type="text" name="name" class="form-control">
+					<label for="description">Опис категорії:</label>
+					<input type="text" name="description" class="form-control">
 		  		</div>
             <button type="submit" class="btn btn-primary">Зберегти</button>
         </form>

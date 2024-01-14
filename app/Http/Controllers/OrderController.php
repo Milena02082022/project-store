@@ -12,19 +12,13 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('admin.orders.index');
+      $orders = Order::all();
+      return view('admin.orders.index', compact('orders'));
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function show(Order $order)
     {
-        $order = Order::find($id);
-        if ($order) {
-            return view('admin.orders.show', compact('order'));
-        } else {
-            return redirect()->route('orders.index')->with('error', 'Замовлення не знайдено або його не існує');
-        }
+      return view('admin.orders.show', compact('order'));
     }
     
 }

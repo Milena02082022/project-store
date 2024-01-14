@@ -1,52 +1,63 @@
 @extends('layouts.app')
 
-@section('page.title', "Категорії")
+@section('page.title', "Корзина")
 
 @section('content')
 <section>
-	<div class="container mt-5">
-		<h2>Корзина</h2>
-		
-		<!-- Таблиця з товарами в корзині -->
-		<table class="table">
-			 <thead>
-				  <tr>
-						<th scope="col">Назва товару</th>
-						<th scope="col">Ціна</th>
-						<th scope="col">Кількість</th>
-						<th scope="col">Загальна сума</th>
-						<th scope="col"></th>
-				  </tr>
-			 </thead>
-			 <tbody>
-				  <!-- Приклад рядка з товаром -->
-				  <tr>
-						<td>Смартфон Apple iPhone 13 </td>
-						<td>31999 грн</td>
-						<td>1</td>
-						<td>31999 грн</td>
-						<td><button class="btn btn-danger btn-sm">Видалити</button></td>
-				  </tr>
-				  <tr>
-					<td>Планшет Samsung Galaxy Tab S6 Lite 10.4'' 64Gb Grey </td>
-					<td>11699 грн.</td>
-					<td>1</td>
-					<td>11699 грн.</td>
-					<td><button class="btn btn-danger btn-sm">Видалити</button></td>
-			  </tr>
-			 </tbody>
-		</table>
-	
-		<!-- Загальна сума -->
-		<div class="d-flex justify-content-end">
-			 <h5 class="me-3">Загальна сума: 43698 грн.</h5>
-		</div>
-	
-		<!-- Кнопка для переходу до оформлення замовлення -->
-		<div class="d-flex justify-content-end mt-3">
-			 <a href="#" class="btn btn-primary">Оформити замовлення</a>
-		</div>
-	</div>
+    <div class="container mt-5">
+        <h3 class="title">Корзина</h3>
+        @if ($order && $order->orderItems->isNotEmpty())
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Назва товару</th>
+                        <th scope="col">Ціна</th>
+                        <th scope="col">Кількість</th>
+                        <th scope="col">Загальна сума</th>
+                        <th scope="col">Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($order->orderItems as $item)
+                    <tr>
+                        <td>
+                            @if($item->product)
+                                {{$item->product->name}}
+                            @else
+                                Товар не знайдено
+                            @endif
+                        </td>
+                        <td>{{$item->price}}  грн.</td>
+                        <td>
+                            <div class="input-group">
+                                <a href="{{ route('basket.decrease', ['itemId' => $item->id]) }}" class="btn btn-outline-secondary">-</a>
+                                <input type="text" class="form-control" value="{{ $item->count }}" readonly>
+                                <a href="{{ route('basket.increase', ['itemId' => $item->id]) }}" class="btn btn-outline-secondary">+</a>
+                            </div>
+                        </td>
+                        <td>{{$item->getTotalPrice()}} грн.</td>
+                        <td>
+                            <a href="{{ route('basket.remove', ['itemId' => $item->id]) }}" class="btn btn-danger">Видалити</a>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end">
+                <h5 class="me-3">Загальна сума: {{$order->getTotalPrice()}} грн.</h5>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+                <a href="{{route('products')}}" class="btn btn-success">Додати товари в корзину</a>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <a href="{{ route('basket.place') }}" class="btn btn-primary">Оформити замовлення</a>
+            </div>
+        @else
+            <h4 class="item-text">Корзина порожня</h4>
+            <div class="d-flex justify-content-start mt-3">
+                <a href="{{route('products')}}" class="btn btn-success">Додати товари в корзину</a>
+            </div>
+        @endif
+    </div>
 </section>
-
 @endsection
