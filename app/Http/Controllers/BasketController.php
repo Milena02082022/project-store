@@ -3,135 +3,52 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderItem;
-
-use Illuminate\Http\Request;
+use App\Traits\OrderTrait;
 
 class BasketController extends Controller
 {
+    use OrderTrait;
+
     public function basket()
     {
-        $orderId = session('orderId');
-        if (!is_null($orderId)) {
-            $order = Order::find($orderId);
-        }
+        $order = $this->getOrder();
+
         return view('basket', compact('order'));
     }
 
-    public function basketAdd($productId)
+    public function basketAdd(Product $product)
     {
         $user = Auth::user(); 
-
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Для додавання товарів до корзини потрібно увійти в систему.');
-        }
-
-        $product = Product::find($productId);
 
         if (!$product) {
             return redirect()->route('basket')->with('error', 'Товар не знайдено');
         }
 
-        $orderId = session('orderId');
-        if (is_null($orderId)) {
-            $order = Order::create(['user_id' => $user->id, 'status' => 'В обробці']);
-            session(['orderId' => $order->id]);
-        } else {
-            $order = Order::find($orderId);
-        }
+        $this->orderService->addToBasket($user, $product);
 
-        if ($order->orderItems->contains('product_id', $productId)) {
-            $pivotRow = $order->orderItems->where('product_id', $productId)->first();
-            $pivotRow->count++;
-            $pivotRow->update();
-        } else {
-            $orderItem = new OrderItem([
-                'product_id' => $productId,
-                'count' => 1,
-                'price' => $product->price,
-            ]);
-
-            $order->orderItems()->save($orderItem);
-        }
         return redirect()->route('basket')->with('success', 'Товар додано до корзини');
     }
 
-    public function basketIncrease($itemId)
+    public function basketIncrease(OrderItem $orderItem)
     {
-        $orderItem = OrderItem::find($itemId);
-
-        if (!$orderItem) {
-            return redirect()->route('basket')->with('error', 'Товар не знайдено');
-        }
-        $orderItem->count++;
-        $orderItem->update();
+        $this->orderService->increaseItemQuantity($orderItem);
 
         return redirect()->route('basket')->with('success', 'Кількість товару збільшено');
     }
 
-    public function basketDecrease($itemId)
+    public function basketDecrease(OrderItem $orderItem)
     {
-        $orderItem = OrderItem::find($itemId);
+        $this->orderService->decreaseItemQuantity($orderItem);
 
-        if (!$orderItem) {
-            return redirect()->route('basket')->with('error', 'Товар не знайдено');
-        }
-    
-        if ($orderItem->count > 1) {
-            $orderItem->count--;
-            $orderItem->update();
-        } else {
-            $orderItem->delete();
-        }
-    
-        return $this->redirectWithSuccess('Кількість товару зменшено');
+        return redirect()->route('basket')->with('success', 'Кількість товару зменшено');
     }
 
-    public function basketRemove($itemId)
+    public function basketRemove(OrderItem $orderItem)
     {
-        $orderItem = OrderItem::find($itemId);
+        $this->orderService->removeItem($orderItem);
 
-        if (!$orderItem) {
-            return redirect()->route('basket')->with('error', 'Товар не знайдено');
-        }
-    
-        $orderItem->delete();
-    
-        return $this->redirectWithSuccess('Товар видалено з корзини');
-
+        return redirect()->route('basket')->with('success', 'Товар видалено з корзини');
     }
-
-    protected function redirectWithSuccess($message)
-    {
-        return redirect()->route('basket')->with('success', $message);
-    }
-
-    public function basketPlace()
-    {
-        $orderId = session('orderId');
-        if (!is_null($orderId)) {
-            $order = Order::find($orderId);
-
-            if ($order && $order->orderItems->isNotEmpty()) {
-                return view('basket-place', compact('order'));
-            }
-        }
-        return redirect()->route('basket')->with('error', 'Немає товарів для оформлення замовлення');
-    }
-   
 }
-
-
-
-
-
-
-
-
-
-
-    
-
-

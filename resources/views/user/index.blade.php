@@ -1,31 +1,25 @@
 @extends('layouts.auth')
 
-@section('page.title', "Профіль користувача")
+@section('page.title', "Особистий кабінет користувача")
 
 @section('content')
 <section class="section2">
 		<div class="container mt-4">
 			<div class="row">
-				<div class="col-md-2">
-					<div class="list-group">
-					  <button class="btn btn-light "><a href="{{url('/home')}}" class="nav-link">Назад</a></button>
+				@if (session('success'))
+					<div class="alert alert-success">
+						{{ session('success') }}
 					</div>
+				@endif
+			  <div class="col-md-2">
+				 <div class="list-group">
+					<a href="{{route('user.profile')}}" class="list-group-item list-group-item-action">Профіль</a>
 				 </div>
-				 <div class="col-md-9">
-					<h3 class="title">Профіль користувача</h3>
-					<p class="item-text"> Ім`я: 
-						<span class="name"> {{ Auth::user()->name }}</span>
-					</p>
-					<p class="item-text">Електронна пошта: 
-						<span class="name">{{ Auth::user()->email }}</span>
-					</p>
-					<p class="item-text">Роль: 
-						<span class="name">{{ Auth::user()->isAdmin() ? 'Адміністратор' : 'Користувач' }}</span>
-					</p>
-					<p class="item-text">Дата реєстрації: 
-						<span class="name">{{ Auth::user()->created_at->format('d.m.Y') }}</span>
-					</p>		 
-				</div>
+			  </div>
+			  <div class="col-md-9">
+				 <h3 class="title">Привіт, {{ Auth::user()->name }}!</h3>
+                 <p class="item-text">Ви можете створити чи переглянути своє замовлення!</p>
+			  </div>
 			</div>
 		</div>
 </section>

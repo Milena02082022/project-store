@@ -14,7 +14,13 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('status', ['В обробці', 'Замовлено', 'Скасовано'])->default('В обробці');
+            $table->string('name')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('shipping_address')->nullable();
+            $table->enum('postal_service', ['nova_poshta', 'ukrposhta'])->nullable();
+            $table->enum('payment_method', ['card', 'cash'])->nullable();
+            $table->decimal('total_amount', 10, 2)->nullable();
+            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled']);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

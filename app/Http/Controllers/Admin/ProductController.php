@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
 
@@ -13,6 +16,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::get();
+        
         return view('admin.goods.index', compact('products'));
     }
 
@@ -27,22 +31,18 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $request->validate([
-            'category_id' => 'required',
-            'name' => 'required', 
-            'code' => 'required', 
-            'description' => 'required',
-            'price' => 'required', 
-        ]);
+        $validated = $request->validated();
+        
         Product::create([
-            'category_id' => $request->input('category_id'),
-            'name'        => $request->input('name'),
-            'code'        => $request->input('code'),
-            'description' => $request->input('description'),
-            'price'       => $request->input('price'),
+            'category_id' => $validated['category_id'],
+            'name'        =>  $validated['name'],
+            'code'        =>  $validated['code'],
+            'description' =>  $validated['description'],
+            'price'       =>  $validated['price'],
         ]);
+        
         return redirect()->route('goods.index')->with('success', 'Товар успішно створено.');
     }
 
@@ -65,15 +65,12 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $request->validate([
-            'new_product_name' => 'required',
-        ]);
+        $validated = $request->validated();
 
-        $product->update([
-            'name' => $request->input('new_product_name'),
-        ]);
+        $product->name = $validated['new_product_name'];
+        $product->save();
 
         return redirect()->route('goods.index')->with('success', 'Товар успішно змінено.');
     }

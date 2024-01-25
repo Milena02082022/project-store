@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
 use App\Models\Category;
 
@@ -28,20 +30,17 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $request->validate([
-            'name'        => 'required',
-            'code'        => 'required',
-            'description' => 'required', 
-        ]);
-        Category::create([
-            'name'        => $request->input('name'),
-            'code'        => $request->input('code'),
-            'description' => $request->input('description'),
-        ]);
-        return redirect()->route('classes.index')->with('success', 'Категорію успішно створено.');
+        $validated = $request->validated();
 
+        Category::create([
+            'name'        => $validated['name'],
+            'code'        => $validated['code'],
+            'description' => $validated['description'],
+        ]);
+
+        return redirect()->route('classes.index')->with('success', 'Категорію успішно створено.');
     }
 
     /**
@@ -63,16 +62,12 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $request->validate([
-            'new_category_name' => 'required',
-        ]);
+        $validated = $request->validated();
 
-        $category->update([
-            'name' => $request->input('new_category_name'),
-        ]);
-
+        $category->name = $validated['new_category_name'];
+        $category->save();
 
         return redirect()->route('classes.index')->with('success', 'Категорію успішно змінено.');
     }   

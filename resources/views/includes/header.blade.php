@@ -41,7 +41,7 @@
 							</li>
 						@else
 							<li class="nav-item">
-								<a class="nav-link" href="{{ route('home') }}">{{ __('Особистий кабінет') }}</a>
+								<a class="nav-link" href="{{ route('user.home') }}">{{ __('Особистий кабінет') }}</a>
 							</li>
 						@endif
 						<li class="nav-item">

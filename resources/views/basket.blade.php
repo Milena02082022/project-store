@@ -5,6 +5,16 @@
 @section('content')
 <section>
     <div class="container mt-5">
+        @if (session('success'))
+			<div class="alert alert-success">
+				{{ session('success') }}
+			</div>
+		@endif
+		@if (session('error'))
+			<div class="alert alert-danger">
+				{{ session('error') }}
+			</div>
+		@endif
         <h3 class="title">Корзина</h3>
         @if ($order && $order->orderItems->isNotEmpty())
             <table class="table">
@@ -30,14 +40,17 @@
                         <td>{{$item->price}}  грн.</td>
                         <td>
                             <div class="input-group">
-                                <a href="{{ route('basket.decrease', ['itemId' => $item->id]) }}" class="btn btn-outline-secondary">-</a>
+                                <a href="{{ route('basket.decrease', ['orderItem' => $item->id]) }}" class="btn btn-outline-secondary">-</a>
                                 <input type="text" class="form-control" value="{{ $item->count }}" readonly>
-                                <a href="{{ route('basket.increase', ['itemId' => $item->id]) }}" class="btn btn-outline-secondary">+</a>
+                                <a href="{{ route('basket.increase', ['orderItem' => $item->id]) }}" class="btn btn-outline-secondary">+</a>
                             </div>
                         </td>
                         <td>{{$item->getTotalPrice()}} грн.</td>
                         <td>
-                            <a href="{{ route('basket.remove', ['itemId' => $item->id]) }}" class="btn btn-danger">Видалити</a>
+                            <form action="{{ route('basket.remove', ['orderItem' => $item->id]) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Видалити</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
