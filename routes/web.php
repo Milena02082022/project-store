@@ -68,4 +68,4 @@ Route::get('/logout', [LoginController::class, 'getLogout'])->name('logout');
 
 Route::get('/{category}', [MainController::class, 'category'])->name('category');
 
-Route::get('/{category}/{product:code}', [MainController::class, 'product'])->name('product');
+Route::get('{category}/{product:code}', [MainController::class, 'product'])->name('product');
