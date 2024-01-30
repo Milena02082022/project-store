@@ -28,16 +28,8 @@ class MakingOrderController extends Controller
 
         $validated = $request->validated();
         
-        $order->name = $validated['name'];
-        $order->phone_number = $validated['phone_number'];
-        $order->shipping_address = $validated['shipping_address'];
-        $order->postal_service = $validated['postal_service'];
-        $order->payment_method = $validated['payment_method'];
-        $order->total_amount = $order->getTotalPrice();
-        $order->status = 'completed';
-        
-        $order->save();
-        
+        $order->fill(array_merge($validated, ['total_amount' => $order->getTotalPrice(), 'status' => 'completed']))->save();
+                
         return redirect()->route('user.home')->with('success', 'Замовлення успішно оформлено!');
 
     }

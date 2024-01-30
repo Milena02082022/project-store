@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -15,9 +16,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::get();
+        $products = Product::query()->get();
         
-        return view('admin.goods.index', compact('products'));
+        return view('admin.products.index', compact('products'));
     }
 
     /**
@@ -25,25 +26,18 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.goods.create');
+        $categories = Category::query()->get();
+        return view('admin.products.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(StoreProductRequest $request, Product $product)
     {
-        $validated = $request->validated();
+        $product->create($request->validated());
         
-        Product::create([
-            'category_id' => $validated['category_id'],
-            'name'        =>  $validated['name'],
-            'code'        =>  $validated['code'],
-            'description' =>  $validated['description'],
-            'price'       =>  $validated['price'],
-        ]);
-        
-        return redirect()->route('goods.index')->with('success', 'Товар успішно створено.');
+        return redirect()->route('products.index')->with('success', 'Товар успішно створено.');
     }
 
     /**
@@ -51,7 +45,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('admin.goods.show', compact('product'));
+        return view('admin.products.show', compact('product'));
     }
 
     /**
@@ -59,7 +53,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('admin.goods.edit', compact('product'));
+        return view('admin.products.edit', compact('product'));
     }
 
     /**
@@ -67,12 +61,12 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $validated = $request->validated();
+        
+        $product->update([
+            'name'=> $request->new_product_name,
+        ]);
 
-        $product->name = $validated['new_product_name'];
-        $product->save();
-
-        return redirect()->route('goods.index')->with('success', 'Товар успішно змінено.');
+        return redirect()->route('products.index')->with('success', 'Товар успішно змінено.');
     }
 
     /**
@@ -80,11 +74,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if ($product) {
-            $product->delete();
-            return redirect()->route('goods.index')->with('success', 'Товар успішно видалений.');
-        }else {
-            return redirect()->route('goods.index')->with('error', 'Помилка видалення товару.');
-        } 
+        $product->delete();
+        
+        return redirect()->route('products.index')->with('success', 'Товар успішно видалений.');
     }
 }

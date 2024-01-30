@@ -5,7 +5,7 @@
 	<div class="container">
 		<button class="btn btn-light "><a href="{{url('/admin')}}" class="nav-link">Назад</a></button>
 		<h3 class="title">Редагувати категорію</h3>
-		<form method="POST" action="{{ route('classes.update', ['category' => $category->id]) }}">
+		<form method="POST" action="{{ route('categories.update', ['category' => $category->id]) }}">
 			@csrf
 			@method('PUT')
 			<div class="form-group pb-2">

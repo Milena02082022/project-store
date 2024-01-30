@@ -11,7 +11,7 @@ class MainController extends Controller
     public function index()
     {
         $products = Product::inRandomOrder()->take(6)->get();
-        $categories = Category::get();
+        $categories = Category::query()->get();
 
         return view('welcome', compact('products','categories'));
     }
@@ -23,14 +23,14 @@ class MainController extends Controller
 
     public function products()
     {
-        $products = Product::get();
+        $products = Product::query()->get();
 
         return view('products', compact('products'));
     }
 
     public function categories()
     {
-        $categories = Category::get();
+        $categories = Category::query()->get();
 
         return view('categories', compact('categories'));
     }

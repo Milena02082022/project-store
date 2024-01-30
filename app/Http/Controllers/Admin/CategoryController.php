@@ -15,8 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::get();
-        return view('admin.classes.index', compact('categories'));
+        $categories = Category::guery()->get();
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -24,23 +24,17 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.classes.create');
+        return view('admin.categories.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request, Category $category)
     {
-        $validated = $request->validated();
-
-        Category::create([
-            'name'        => $validated['name'],
-            'code'        => $validated['code'],
-            'description' => $validated['description'],
-        ]);
-
-        return redirect()->route('classes.index')->with('success', 'Категорію успішно створено.');
+        $category->create($request->validated());
+        
+        return redirect()->route('categories.index')->with('success', 'Категорію успішно створено.');
     }
 
     /**
@@ -48,7 +42,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('admin.classes.show', compact('category'));
+        return view('admin.categories.show', compact('category'));
     }
 
     /**
@@ -56,7 +50,7 @@ class CategoryController extends Controller
      */
     public function edit( Category $category)
     {
-        return view('admin.classes.edit', compact('category'));
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -64,12 +58,12 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $validated = $request->validated();
-
-        $category->name = $validated['new_category_name'];
-        $category->save();
-
-        return redirect()->route('classes.index')->with('success', 'Категорію успішно змінено.');
+        
+        $category->update([
+            'name'=> $request->new_category_name,
+        ]);
+       
+        return redirect()->route('categories.index')->with('success', 'Категорію успішно змінено.');
     }   
 
     /**
@@ -77,11 +71,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if ($category) {
-            $category->delete();
-            return redirect()->route('classes.index')->with('success', 'Категорію успішно видалено.');
-        } else {
-            return redirect()->route('classes.index')->with('error', 'Помилка видалення категорії.');
-        }
+        $category->delete();
+
+        return redirect()->route('categories.index')->with('success', 'Категорію успішно видалено.'); 
     }
 }

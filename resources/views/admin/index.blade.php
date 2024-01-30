@@ -8,8 +8,8 @@
 			<div class="row">
 			  <div class="col-md-2">
 				 <div class="list-group">
-					<a href="{{route('goods.index')}}" class="list-group-item list-group-item-action">Товари</a>
-					<a href="{{route('classes.index')}}" class="list-group-item list-group-item-action">Категорії</a>
+					<a href="{{route('products.index')}}" class="list-group-item list-group-item-action">Товари</a>
+					<a href="{{route('categories.index')}}" class="list-group-item list-group-item-action">Категорії</a>
 					<a href="{{route('orders.index')}}" class="list-group-item list-group-item-action">Замовлення</a>
 				 </div>
 			  </div>

@@ -22,10 +22,6 @@ class BasketController extends Controller
     {
         $user = Auth::user(); 
 
-        if (!$product) {
-            return redirect()->route('basket')->with('error', 'Товар не знайдено');
-        }
-
         $this->orderService->addToBasket($user, $product);
 
         return redirect()->route('basket')->with('success', 'Товар додано до корзини');

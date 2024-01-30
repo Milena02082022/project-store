@@ -33,7 +33,7 @@ class OrderService
 
 	public function increaseItemQuantity(OrderItem $orderItem)
    {
-      $orderItem->count++;
+      $orderItem->increment('count');
 
       $orderItem->update();
    }
@@ -41,7 +41,7 @@ class OrderService
    public function decreaseItemQuantity(OrderItem $orderItem)
    {
       if ($orderItem->count > 1) {
-         $orderItem->count--;
+         $orderItem->decrement('count');
          $orderItem->update();
       } else {
          $orderItem->delete();
@@ -63,13 +63,11 @@ class OrderService
 
    protected function addNewOrderItem(Order $order, Product $product)
    {
-      $orderItem = new OrderItem([
+      $order->orderItems()->create([
          'product_id' => $product->id,
          'count' => 1,
          'price' => $product->price,
       ]);
-
-      $order->orderItems()->save($orderItem);
    }
 
    public function hasNonEmptyOrderItems($order) 

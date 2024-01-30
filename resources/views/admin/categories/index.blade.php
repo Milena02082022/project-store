@@ -31,8 +31,8 @@
 								<td>{{ $category->id }}</td>
 								<td>{{ $category->name }}</td>
 								<td>
-									 <a href="{{ route('classes.edit', ['category' => $category->id]) }}" class="btn btn-primary">Редагувати</a>
-									 <form action="{{route('classes.destroy', ['category' => $category->id])}}" method="POST" style="display: inline;">
+									 <a href="{{ route('categories.edit', ['category' => $category->id]) }}" class="btn btn-primary">Редагувати</a>
+									 <form action="{{route('categories.destroy', ['category' => $category->id])}}" method="POST" style="display: inline;">
 										  @csrf
 										  @method('DELETE')
 										  <button type="submit" class="btn btn-danger">Видалити</button>
@@ -42,7 +42,7 @@
 					 @endforeach
 				</tbody>
 			</table>
-			<a href="{{ route('classes.create') }}" class="btn btn-success">Створити нову категорію</a>
+			<a href="{{ route('categories.create') }}" class="btn btn-success">Створити нову категорію</a>
 			</div>
 		</div>
 	</div>

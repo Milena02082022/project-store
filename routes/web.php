@@ -28,16 +28,16 @@ Auth::routes([
 	'verify' => false,
 ]);
 
-Route::middleware(['auth','checkRole:2'])->group(function () {
-	Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
-	Route::resource('goods', ProductController::class)->parameters(['goods' => 'product']);
-	Route::resource('classes', CategoryController::class)->parameters(['classes' => 'category']);
+Route::prefix('admin')->middleware(['auth','checkRole:admin'])->group(function () {
+	Route::get('/', [AdminController::class, 'index'])->name('admin.home');
+	Route::resource('products', ProductController::class);
+	Route::resource('categories', CategoryController::class);
 	Route::resource('orders', OrderController::class)->only([
 		'index', 'show'
 	]);
 });
 
-Route::middleware(['auth', 'checkRole:1'])->group(function () {
+Route::middleware(['auth', 'checkRole:user'])->group(function () {
 	Route::prefix('user')->group(function () {
 		Route::get('/home', [HomeController::class, 'index'])->name('user.home');
 		Route::get('/profile', [HomeController::class, 'profile'])->name('user.profile');
@@ -49,10 +49,12 @@ Route::middleware(['auth', 'checkRole:1'])->group(function () {
 		Route::post('/remove/{orderItem}', [BasketController::class, 'basketRemove'])->name('basket.remove');
 		Route::get('/increase/{orderItem}', [BasketController::class, 'basketIncrease'])->name('basket.increase');
 		Route::get('/decrease/{orderItem}', [BasketController::class, 'basketDecrease'])->name('basket.decrease');
-		Route::get('/place', [MakingOrderController::class, 'basketPlace'])->name('basket.place');	
+		Route::get('/place', [MakingOrderController::class, 'basketPlace'])->name('basket.place');
+		Route::post('/place-order', [MakingOrderController::class, 'placeOrder'])->name('place.order');	
   });
-	Route::post('/place-order', [MakingOrderController::class, 'placeOrder'])->name('place.order');
+	
 });
+
 
 Route::get('/', [MainController::class, 'index'])->name('welcome');
 
@@ -64,7 +66,6 @@ Route::get('/contacts', [MainController::class, 'contacts'])->name('contacts');
 
 Route::get('/logout', [LoginController::class, 'getLogout'])->name('logout');
 
-
 Route::get('/{category}', [MainController::class, 'category'])->name('category');
 
-Route::get('/{category}/{product?}', [MainController::class, 'product'])->name('product');
+Route::get('/{category}/{product:code}', [MainController::class, 'product'])->name('product');
